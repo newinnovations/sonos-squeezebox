@@ -1,0 +1,4 @@
+*.o
+/sonos-squeezebox
+attic
+*.sh

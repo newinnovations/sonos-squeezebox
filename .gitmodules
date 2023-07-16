@@ -1,0 +1,6 @@
+[submodule "noson"]
+	path = noson
+	url = https://github.com/newinnovations/noson.git
+[submodule "squeezelite"]
+	path = squeezelite
+	url = https://github.com/ralph-irving/squeezelite.git
