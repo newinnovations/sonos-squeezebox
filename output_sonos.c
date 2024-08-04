@@ -19,6 +19,7 @@
 
 #include "squeezelite.h"
 #include "output_sonos.h"
+#include <math.h>
 
 #if BYTES_PER_FRAME != 8
 #error BYTES_PER_FRAME not 8 bytes
@@ -43,6 +44,7 @@ static u8_t* buf;
 static unsigned buffill;
 static int bytes_per_frame;
 static unsigned squeezebox_stream_id = 0;
+static unsigned volume = 10; //default volume
 
 static bool silent = true;
 
@@ -195,7 +197,16 @@ bool test_open(const char* device, unsigned rates[], bool userdef_rates)
     return true;
 }
 
+#define MINVOL_DB 72 // LMS volume map for SqueezePlay sends values in range ~ -72..0 dB
+
 void set_volume(unsigned left, unsigned right)
 {
-    // printf("SONOS: set_volume(%d, %d)\n", left, right);
+    float ldB = 20 * log10( left  / 65536.0F );
+    volume = ((ldB > -MINVOL_DB ? MINVOL_DB + floor(ldB) : 0) / MINVOL_DB * 100);
+    printf("SONOS: set_volume (%d)\n", volume);
+}
+
+unsigned get_volume(void)
+{
+    return volume;
 }

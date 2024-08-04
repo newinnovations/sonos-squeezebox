@@ -29,6 +29,7 @@
 
 extern "C" {
 unsigned get_squeezebox_stream_id(void);
+unsigned get_volume(void);
 }
 
 #include <algorithm>
@@ -211,6 +212,7 @@ int main(int argc, char** argv)
 
     unsigned current_stream_id = 0;
     unsigned time_count = 0;
+    unsigned current_volume = 0;
 
     status.update();
 
@@ -229,6 +231,15 @@ int main(int argc, char** argv)
             time_count = 0;
         } else {
             ++time_count;
+        }
+
+        unsigned volume = get_volume();
+        if(volume != current_volume) {
+            SONOS::ZonePtr pl = gPlayer->GetZone();
+            for (SONOS::Zone::iterator ip = pl->begin(); ip != pl->end(); ++ip) {
+                gPlayer->SetVolume((*ip)->GetUUID(), volume);
+            }
+            current_volume = volume;
         }
         usleep(10000); // 10ms
     }

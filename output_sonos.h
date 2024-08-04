@@ -24,5 +24,6 @@ void output_init_sonos(log_level level, unsigned output_buf_size, char* params, 
 void output_close_sonos(void);
 void new_squeezebox_stream_id(void);
 unsigned get_squeezebox_stream_id(void);
+unsigned get_volume(void);
 
 #endif /* OUTPUT_SONOS_H */
